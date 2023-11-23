@@ -9,6 +9,9 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
+# Configure emulated_storage.mk
+$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
+
 # Inherit some common TWRP stuff.
 $(call inherit-product, vendor/twrp/config/common.mk)
 
@@ -24,6 +27,6 @@ PRODUCT_MANUFACTURER := vivo
 PRODUCT_GMS_CLIENTID_BASE := android-vivo
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRIVATE_BUILD_DESC="qssi-user 13 TP1A.220624.014 eng.compil.20231101.172655 release-keys"
+    PRIVATE_BUILD_DESC="qssi-user 13 TP1A.220624.014 eng.compil.20230510.204558 release-keys"
 
-BUILD_FINGERPRINT := vivo/PD2171/PD2171:13/TP1A.220624.014/compiler11011726:user/release-keys
+BUILD_FINGERPRINT := vivo/PD2171/PD2171:13/TP1A.220624.014/compiler05102045:user/release-keys
