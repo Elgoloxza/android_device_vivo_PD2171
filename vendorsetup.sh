@@ -4,16 +4,20 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
-## 初始化
-	# 允许缺少依赖项
-	export ALLOW_MISSING_DEPENDENCIES=true
-	# 设置默认语言为简体中文
+	# 初始化
 	export TW_DEFAULT_LANGUAGE="zh_CN"
-	# 去除所有本地化设置
 	export LC_ALL="C"
-
-## 添加功能
+	export ALLOW_MISSING_DEPENDENCIES=true
+	
+	## 构建信息
+	# 设置显示在关于页面里的维护人员名称
+	export OF_MAINTAINER=ymdzq
+	# 设置版本号为日期
+	export FOX_VERSION=$(date +%y.%m.%d)
+	# 当你需要标记出这个recovery是一个特殊版本时使用
+	# export FOX_VARIANT=OriginOS
+	
+	## 添加功能
 	# 使用完整版getprop命令
 	export FOX_REPLACE_TOOLBOX_GETPROP=1
 	# 支持tar命令
@@ -34,11 +38,75 @@
 	# 添加phhusson's lptools工具
 	export OF_ENABLE_LPTOOLS=1
 	
-## 已弃用的命令
-	# 'add_lunch_combo'
+	## 添加橙狐特殊处理
+	#设定recovery、system、vendor、boot分区路径
+	export FOX_RECOVERY_INSTALL_PARTITION="/dev/block/bootdevice/by-name/recovery"
+	export FOX_RECOVERY_SYSTEM_PARTITION="/dev/block/mapper/system"
+	export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
+	export FOX_RECOVERY_BOOT_PARTITION="/dev/block/bootdevice/by-name/boot"
+	# ramdisk使用lz4压缩
+	export OF_USE_LZ4_COMPRESSION=1
+	
+	# 当安装MIUI或者在MIUI上安装橙狐zip，使用magisk处理所有boot和recovery镜像，防止橙狐被MIUI官方recovery替换
+	export OF_FORCE_MAGISKBOOT_BOOT_PATCH_MIUI=1
+	# 避免在已加密设备上应用强制加密补丁
+	export OF_DONT_PATCH_ENCRYPTED_DEVICE=1
+	# 跳过FBE解密流程（防止卡在橙狐LOGO或Redmi/Mi LOGO界面）
+	# export OF_SKIP_FBE_DECRYPTION=1
+	# 当ROM大于等于指定安卓SDK等级时，跳过FBE解密流程
+	# export OF_SKIP_FBE_DECRYPTION_SDKVERSION=31
+	# 防止橙狐在解密后重新运行自启动进程
+	export OF_NO_RELOAD_AFTER_DECRYPTION=1
+	# 禁用检查rom里的compatibility.zip
+	export OF_NO_TREBLE_COMPATIBILITY_CHECK=1
+	# 使用zip卡刷包的方式安装橙狐后不恢复橙狐的默认设置
+	export FOX_RESET_SETTINGS=disabled
+	# 删除zip包里的AromaFM（有的设备用不了）
+	export FOX_DELETE_AROMAFM=1
+	
+	## 界面显示设定
+	# 设置屏幕高度，状态栏高度，状态栏左右边距
+	# 由于橙狐默认屏幕比例是16：9,所以应设置屏幕高度为屏幕比例换算成n：9之后，n*120
+	export OF_SCREEN_H=2400
+	# 状态栏高度（默认72像素，刘海屏设备按需设置）
+	export OF_STATUS_H=99
+	# 状态栏左右避让宽度（默认20像素，顶部圆角设备按需设置）
+	export OF_STATUS_INDENT_LEFT=48
+	export OF_STATUS_INDENT_RIGHT=48
+	# 添加黑色状态栏（隐藏刘海）选项
+	export OF_HIDE_NOTCH=1
+	# 由于有刘海遮挡，设置时钟位置为只能显示在左侧或右侧
+	export OF_CLOCK_POS=1
+	# 禁止禁用导航栏
+	export OF_ALLOW_DISABLE_NAVBAR=0
+	
+	## 调整刷入zip刷机包时刷机脚本要检测的相关属性
+	# 设置一个很老的build时间，用于解决某些ROM例如MIUI刷机脚本里的防回滚保护检测
+	export FOX_BUGGED_AOSP_ARB_WORKAROUND="1546300800"; # Tuesday, January 1, 2019 12:00:00 AM GMT+00:00
+	
+	# 为“快速备份”指定默认选择的分区
+	export OF_QUICK_BACKUP_LIST="/boot;/data;"
+	# 将装载逻辑分区时的一些错误仅显示在日志里
+	export OF_IGNORE_LOGICAL_MOUNT_ERRORS=1
+	# 禁用橙狐内置的magisk菜单
+	# export FOX_DELETE_MAGISK_ADDON=1
+	# 使用指定的magisk
+	# export FOX_USE_SPECIFIC_MAGISK_ZIP="$HOME/Magisk.zip"
+	# 使用指定的magisk版本号，由于magisk 23+使用了新的包装形式，文件路径改变了，橙狐无法获取正确的版本
+	# export MAGISK_VER=26.1
+	# 当修补recovery/boot镜像时，始终指示magiskboot v24+修补vbmeta标头（自动禁用avb验证？）
+	export FOX_PATCH_VBMETA_FLAG=1
+	# 在修复或格式化f2fs数据分区之前自动卸载绑定/sdcard
+	export OF_UNBIND_SDCARD_F2FS=1
+	# 设置默认时区为北京时间
+	export OF_DEFAULT_TIMEZONE="TAIST-8;TAIDT"
+	# 支持通过修补vbmeta/vbmeta_system禁用avb2.0
+	export OF_SUPPORT_VBMETA_AVB2_PATCHING=1
+
+
+#以弃用的命令'add_lunch_combo'
 	#add_lunch_combo omni_PD2171-user
 	#add_lunch_combo omni_PD2171-userdebug
 	#add_lunch_combo omni_PD2171-eng
 	
-
-
+	
